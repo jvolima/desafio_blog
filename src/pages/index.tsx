@@ -40,7 +40,7 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
       <div className={styles.homeContainer}>
         <div className={styles.homeContent}>
           {postsPagination.results.map(post => (
-            <Link href={`post/${post.uid}`}>
+            <Link href={`/post/${post.uid}`}>
               <a key={post.uid}>
                 <h1>{post.data.title}</h1>
                 <h2>{post.data.subtitle}</h2>
@@ -53,6 +53,11 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
               </a>
             </Link>
           ))}
+          {postsPagination.next_page !== null ? (
+            <button type="button">Carregar mais</button>
+          ) : (
+            ''
+          )}
         </div>
       </div>
     </>
@@ -70,13 +75,13 @@ export const getStaticProps: GetStaticProps = async () => {
         'posts.author',
         'posts.first_publication_date',
       ],
-      pageSize: 100,
+      pageSize: 5,
     }
   );
 
   const posts: Post[] = postsResponse.results.map(post => {
     return {
-      slug: post.uid,
+      uid: post.uid,
       data: {
         title: post.data.title,
         subtitle: post.data.subtitle,
@@ -101,5 +106,6 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       postsPagination,
     },
+    revalidate: 60 * 10, // 10 minutos
   };
 };

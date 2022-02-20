@@ -1,1 +1,47 @@
-// TODO
+.banner {
+  margin-top: 2.5rem;
+
+  img {
+    width: 100%;
+    height: 400px
+  }
+}
+
+.postContainer {
+  max-width: 700px;
+  margin: 5.625rem auto 0;
+
+  .postContent {
+    h1 {
+      color: var(--white);
+      font-size: 3rem;
+      line-height: 3.625rem;
+      letter-spacing: -0.5px
+    }
+
+    div {
+      display: flex;
+      align-items: center;
+      margin-top: 2.25rem;
+
+      time {
+        margin-left: 0.75rem;
+        font-size: 0.875rem;
+        color: var(--gray-200);
+        line-height: 1rem;
+      }
+
+      .publicationDate {
+        margin-right: 1.5rem
+      }
+
+      span {
+        margin-left: 0.75rem;
+        font-size: 0.875rem;
+        color: var(--gray-200);
+        line-height: 1rem;
+        margin-right: 1.5rem;
+      }
+    }
+  }
+}
