@@ -37,4 +37,4 @@ Para realizar esse desafio, criamos para você esse modelo que você deve utiliz
 
 O template está disponível na seguinte URL:
 
-[](https://github.com/rocketseat-education/ignite-template-reactjs-criando-um-projeto-do-zero)
+<a href="https://github.com/rocketseat-education/ignite-template-reactjs-criando-um-projeto-do-zero" target="_blank">Link do repositório</a>
