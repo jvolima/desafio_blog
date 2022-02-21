@@ -1,3 +1,5 @@
+/* eslint-disable no-return-assign */
+/* eslint-disable no-param-reassign */
 /* eslint-disable react/no-danger */
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
@@ -52,6 +54,23 @@ export default function Post({ post }: PostProps): JSX.Element {
     }
   );
 
+  const totalWords = post.data.content.reduce(
+    (total: number, contentItem): number => {
+      total += contentItem.heading.split(' ').length;
+
+      const bodyWords = contentItem.body.map(
+        item => item.text.split(' ').length
+      );
+
+      bodyWords.map(word => (total += word));
+
+      return total;
+    },
+    0
+  );
+
+  const estimatedTimeInMinutes = Math.ceil(totalWords / 200);
+
   return (
     <>
       <Head>
@@ -72,7 +91,7 @@ export default function Post({ post }: PostProps): JSX.Element {
             <span>{post.data.author}</span>
 
             <FiClock color="#BBBBBB" />
-            <time>4 min</time>
+            <time>{estimatedTimeInMinutes} min</time>
           </div>
           {post.data.content.map(content => (
             <article key={content.heading}>
@@ -117,10 +136,12 @@ export const getStaticProps: GetStaticProps = async context => {
   const prismic = getPrismicClient();
   const response = await prismic.getByUID('posts', String(slug), {});
 
-  const post: Post = {
+  const post = {
+    uid: response.uid,
     first_publication_date: response.first_publication_date,
     data: {
       title: response.data.title,
+      subtitle: response.data.subtitle,
       author: response.data.author,
       banner: {
         url: response.data.banner.url,

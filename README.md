@@ -31,6 +31,10 @@ Essa é uma aplicação onde o meu principal objetivo é criar um blog do zer
 - Requisições HTTP com `fetch`;
 - Entre outros.
 
+## Aplicação
+
+![Foto da aplicação](./spacetraveling.png)
+
 ## Template da aplicação
 
 Para realizar esse desafio, criamos para você esse modelo que você deve utilizar como um template do GitHub.
