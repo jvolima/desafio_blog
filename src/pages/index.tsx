@@ -5,8 +5,11 @@ import Link from 'next/link';
 
 import { FiCalendar, FiUser } from 'react-icons/fi';
 
+import Head from 'next/head';
+
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
+import { useState } from 'react';
 import { getPrismicClient } from '../services/prismic';
 
 import commonStyles from '../styles/common.module.scss';
@@ -32,16 +35,69 @@ interface HomeProps {
 }
 
 export default function Home({ postsPagination }: HomeProps): JSX.Element {
+  const formatedPosts = postsPagination.results.map(post => {
+    return {
+      ...post,
+      first_publication_date: format(
+        new Date(post.first_publication_date),
+        'dd MMM yyyy',
+        {
+          locale: ptBR,
+        }
+      ),
+    };
+  });
+
+  const [posts, setPosts] = useState<Post[]>(formatedPosts);
+  const [nextPage, setNextPage] = useState(postsPagination.next_page);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  async function handleNextPage(): Promise<void> {
+    if (currentPage !== 1 && nextPage === null) {
+      return;
+    }
+
+    const postsResults = await fetch(`${nextPage}`).then(response =>
+      response.json()
+    );
+
+    setNextPage(postsResults.next_page);
+    setCurrentPage(postsResults.page);
+
+    const newPosts = postsResults.results.map(post => {
+      return {
+        uid: post.uid,
+        data: {
+          title: post.data.title,
+          subtitle: post.data.subtitle,
+          author: post.data.author,
+        },
+        first_publication_date: format(
+          new Date(post.first_publication_date),
+          'dd MMM yyyy',
+          {
+            locale: ptBR,
+          }
+        ),
+      };
+    });
+
+    setPosts([...posts, ...newPosts]);
+  }
+
   return (
     <>
+      <Head>
+        <title>Início | spacetraveling</title>
+      </Head>
       <header className={styles.homeHeader}>
         <Image src="/logo.svg" alt="logo" width="239px" height="27px" />
       </header>
       <div className={styles.homeContainer}>
         <div className={styles.homeContent}>
-          {postsPagination.results.map(post => (
-            <Link href={`/post/${post.uid}`}>
-              <a key={post.uid}>
+          {posts.map(post => (
+            <Link key={post.uid} href={`/post/${post.uid}`}>
+              <a>
                 <h1>{post.data.title}</h1>
                 <h2>{post.data.subtitle}</h2>
                 <div>
@@ -53,8 +109,10 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
               </a>
             </Link>
           ))}
-          {postsPagination.next_page !== null ? (
-            <button type="button">Carregar mais</button>
+          {nextPage !== null ? (
+            <button type="button" onClick={handleNextPage}>
+              Carregar mais posts
+            </button>
           ) : (
             ''
           )}
@@ -75,7 +133,7 @@ export const getStaticProps: GetStaticProps = async () => {
         'posts.author',
         'posts.first_publication_date',
       ],
-      pageSize: 5,
+      pageSize: 6,
     }
   );
 
@@ -87,13 +145,7 @@ export const getStaticProps: GetStaticProps = async () => {
         subtitle: post.data.subtitle,
         author: post.data.author,
       },
-      first_publication_date: format(
-        new Date(post.first_publication_date),
-        'PP',
-        {
-          locale: ptBR,
-        }
-      ),
+      first_publication_date: post.first_publication_date,
     };
   });
 
