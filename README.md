@@ -31,6 +31,12 @@ Essa é uma aplicação onde o meu principal objetivo é criar um blog do zer
 - Requisições HTTP com `fetch`;
 - Entre outros.
 
+## Extra miles
+[x] Se o post foi editado, colocar a data e a hora da edição
+[] Navegação entre posts
+[] Comentários com o Utteranc
+[] Preview do documento Prismic
+
 ## Aplicação
 
 ![Foto da aplicação](./spacetraveling.png)

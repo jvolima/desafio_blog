@@ -44,6 +44,19 @@
       }
     }
 
+    .editedTime {
+      display: block;
+      margin-top: 1rem;
+      color: var(--gray-200);
+      font-style: italic;
+      font-size: 0.875rem;
+      line-height: 1rem;
+    }
+
+    &:last-child {
+      margin-bottom: 2rem;
+    }
+
     article {
       margin-top: 5rem;
 

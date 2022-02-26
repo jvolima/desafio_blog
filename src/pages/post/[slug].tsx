@@ -19,6 +19,7 @@ import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
 
 interface Post {
+  last_publication_date: string;
   first_publication_date: string | null;
   data: {
     title: string;
@@ -49,6 +50,14 @@ export default function Post({ post }: PostProps): JSX.Element {
   const formatedDate = format(
     new Date(post.first_publication_date),
     'dd MMM yyyy',
+    {
+      locale: ptBR,
+    }
+  );
+
+  const postEditedDate = format(
+    new Date(post.last_publication_date),
+    "dd MMM yyyy, 'às' hh:mm",
     {
       locale: ptBR,
     }
@@ -93,6 +102,11 @@ export default function Post({ post }: PostProps): JSX.Element {
             <FiClock color="#BBBBBB" />
             <time>{estimatedTimeInMinutes} min</time>
           </div>
+          <time className={styles.editedTime}>
+            {post.first_publication_date === post.last_publication_date
+              ? ''
+              : `* editado em ${postEditedDate}`}
+          </time>
           {post.data.content.map(content => (
             <article key={content.heading}>
               <h2>{content.heading}</h2>
@@ -139,6 +153,7 @@ export const getStaticProps: GetStaticProps = async context => {
   const post = {
     uid: response.uid,
     first_publication_date: response.first_publication_date,
+    last_publication_date: response.last_publication_date,
     data: {
       title: response.data.title,
       subtitle: response.data.subtitle,
