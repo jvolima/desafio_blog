@@ -1,6 +1,4 @@
-# Desafio Ignite criação de um blog (spacetraveling)
-
-## Blog feito utilizando Next
+# Desafio Ignite criação de um blog (spacetraveling) com o Next
 
 ## Tecnologias utilizadas ⚙️
 - Next
@@ -9,6 +7,7 @@
 - Prismic CMS
 - Typescript
 - Eslint e prettier
+- Utteranc
 
 ## Habilidades desenvolvidas 🚀
 - Utilização de CMS para criação de posts
@@ -17,11 +16,11 @@
 
 ## 💻 Sobre o desafio
 
-Nesse desafio, eu deveria criar uma aplicação para treinar o que aprend até agora no ReactJS
+Nesse desafio, eu deveria criar uma aplicação para treinar o que aprendi até agora no ReactJS
 
-Essa é uma aplicação onde o meu principal objetivo é criar um blog do zero. Recebi uma aplicação praticamente em branco que deve consumir os dados do Prismic e ter a interface implementada conforme o layout do Figma. Tive acesso a diversos arquivos para implementar:
+Essa é uma aplicação onde o meu principal objetivo é criar um blog do zero. Recebi uma aplicação em branco que deve consumir os dados do Prismic e ter a interface implementada conforme o layout do Figma. Tive acesso a diversos arquivos para implementar:
 
-- Estilizações global, comun e individuais;
+- Estilizações global, comum e individuais;
 - Importação de fontes Google;
 - Paginação de posts;
 - Cálculo de tempo estimado de leitura do post;
@@ -29,6 +28,10 @@ Essa é uma aplicação onde o meu principal objetivo é criar um blog do zer
 - Formatação de datas com `date-fns`;
 - Uso de ícones com `react-icons`;
 - Requisições HTTP com `fetch`;
+- Comentários com o Utteranc;
+- Preview do documento Prismic;
+- Navegação entre post anterior e próximo;
+- Informação de edição do post;
 - Entre outros.
 
 ## Extra miles
