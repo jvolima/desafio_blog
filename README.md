@@ -1,4 +1,4 @@
-# Desafio Ignite criação de um blog (spacetraveling) com o Next
+# Desafio Ignite criação de um blog (spacetraveling) com o Next ⚡
 
 ## Tecnologias utilizadas ⚙️
 - Next
@@ -34,7 +34,7 @@ Essa é uma aplicação onde o meu principal objetivo é criar um blog do zer
 - Informação de edição do post;
 - Entre outros.
 
-## Extra miles
+## Extra miles 🔥
 - [x] Se o post foi editado, colocar a data e a hora da edição;
 - [x] Navegação entre posts;
 - [] Comentários com o Utteranc;
