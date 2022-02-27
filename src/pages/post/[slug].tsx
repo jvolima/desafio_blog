@@ -1,3 +1,6 @@
+/* eslint-disable no-shadow */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable consistent-return */
 /* eslint-disable no-return-assign */
 /* eslint-disable no-param-reassign */
 /* eslint-disable react/no-danger */
@@ -10,7 +13,8 @@ import Prismic from '@prismicio/client';
 import { FiCalendar, FiUser, FiClock } from 'react-icons/fi';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import Header from '../../components/Header';
 
 import { getPrismicClient } from '../../services/prismic';
@@ -36,12 +40,27 @@ interface Post {
   };
 }
 
-interface PostProps {
-  post: Post;
+interface NavigationPost {
+  title: string;
+  uid: string;
 }
 
-export default function Post({ post }: PostProps): JSX.Element {
+interface PostProps {
+  post: Post;
+  titleAndUidNavigationPosts: NavigationPost[];
+}
+
+export default function Post({
+  post,
+  titleAndUidNavigationPosts,
+}: PostProps): JSX.Element {
   const router = useRouter();
+
+  const [navigationPosts, setNavigationPosts] = useState<NavigationPost[]>([]);
+
+  useEffect(() => {
+    setNavigationPosts(titleAndUidNavigationPosts);
+  }, [titleAndUidNavigationPosts]);
 
   if (router.isFallback) {
     return <h1>Carregando...</h1>;
@@ -120,6 +139,25 @@ export default function Post({ post }: PostProps): JSX.Element {
           ))}
         </div>
       </div>
+      <div className={styles.line} />
+      {navigationPosts?.length === 2 ? (
+        <div className={styles.postsNavigation}>
+          <div>
+            <p>{navigationPosts[1].title}</p>
+            <Link href={`/post/${navigationPosts[1].uid}`}>
+              <a>Post anterior</a>
+            </Link>
+          </div>
+          <div>
+            <p>{navigationPosts[0].title}</p>
+            <Link href={`/post/${navigationPosts[0].uid}`}>
+              <a className={styles.proximo}>Próximo post</a>
+            </Link>
+          </div>
+        </div>
+      ) : (
+        ''
+      )}
     </>
   );
 }
@@ -170,9 +208,59 @@ export const getStaticProps: GetStaticProps = async context => {
     },
   };
 
-  return {
-    props: {
-      post,
-    },
-  };
+  const postsResponse = await prismic.query(
+    [Prismic.predicates.at('document.type', 'posts')],
+    {
+      fetch: [
+        'posts.title',
+        'posts.subtitle',
+        'posts.author',
+        'posts.first_publication_date',
+      ],
+      pageSize: 100,
+    }
+  );
+
+  // eslint-disable-next-line no-shadow
+  const posts = postsResponse.results.map(post => {
+    return {
+      uid: post.uid,
+      data: {
+        title: post.data.title,
+        subtitle: post.data.subtitle,
+        author: post.data.author,
+      },
+      first_publication_date: post.first_publication_date,
+    };
+  });
+
+  const postSelected = posts.find(selected => selected.uid === post.uid);
+
+  const selectedIndex = posts.indexOf(postSelected);
+
+  const navigationPosts = [posts[selectedIndex - 1], posts[selectedIndex + 1]];
+
+  try {
+    const titleAndUidNavigationPosts: NavigationPost[] = navigationPosts?.map(
+      post => {
+        return {
+          title: post.data.title,
+          uid: post.uid,
+        };
+      }
+    );
+
+    return {
+      props: {
+        post,
+        titleAndUidNavigationPosts,
+      },
+    };
+  } catch (error) {
+    return {
+      props: {
+        post,
+      },
+    };
+  }
 };
