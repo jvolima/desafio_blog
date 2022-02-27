@@ -37,8 +37,8 @@ Essa é uma aplicação onde o meu principal objetivo é criar um blog do zer
 ## Extra miles 🔥
 - [x] Se o post foi editado, colocar a data e a hora da edição;
 - [x] Navegação entre posts;
-- [] Comentários com o Utteranc;
-- [] Preview do documento Prismic.
+- [x] Comentários com o Utteranc;
+- [x] Preview do documento Prismic.
 
 ## Aplicação
 

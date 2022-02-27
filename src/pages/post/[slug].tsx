@@ -49,11 +49,13 @@ interface NavigationPost {
 interface PostProps {
   post: Post;
   titleAndUidNavigationPosts: NavigationPost[];
+  preview: boolean;
 }
 
 export default function Post({
   post,
   titleAndUidNavigationPosts,
+  preview,
 }: PostProps): JSX.Element {
   const router = useRouter();
 
@@ -160,6 +162,13 @@ export default function Post({
         ''
       )}
       <Comments />
+      {preview && (
+        <aside>
+          <Link href="/api/exit-preview">
+            <a className={commonStyles.preview}>Sair do modo Preview</a>
+          </Link>
+        </aside>
+      )}
     </>
   );
 }
@@ -184,11 +193,17 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps = async context => {
-  const { slug } = context.params;
+export const getStaticProps: GetStaticProps = async ({
+  params,
+  preview = false,
+  previewData,
+}) => {
+  const { slug } = params;
 
   const prismic = getPrismicClient();
-  const response = await prismic.getByUID('posts', String(slug), {});
+  const response = await prismic.getByUID('posts', String(slug), {
+    ref: previewData?.ref || null,
+  });
 
   const post = {
     uid: response.uid,
@@ -262,6 +277,7 @@ export const getStaticProps: GetStaticProps = async context => {
     return {
       props: {
         post,
+        preview,
       },
     };
   }

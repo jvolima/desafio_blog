@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { Component } from 'react';
+import commonStyles from '../../styles/common.module.scss';
 
 export default class Comments extends Component {
   componentDidMount() {
@@ -16,6 +17,11 @@ export default class Comments extends Component {
   }
 
   render(): JSX.Element {
-    return <div id="inject-comments-for-uterances" />;
+    return (
+      <div
+        id="inject-comments-for-uterances"
+        className={commonStyles.comments}
+      />
+    );
   }
 }
